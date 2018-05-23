@@ -1,14 +1,14 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 let ObjectId = Schema.Types.ObjectId
-var schemaName = 'Log'
+var schemaName = 'Comment'
 
 
 var schema = new Schema({
   title:{type: String, required: true},
   content:{type: String, required: true},
   created: { type: Number, required: true, default: Date.now() },
-  shipId: { type: ObjectId, ref: 'Ship' },
+  logId: { type: ObjectId, ref: 'Ship' },
   userId: { type: ObjectId, ref: 'Ship' }
 
 })

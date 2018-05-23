@@ -1,12 +1,13 @@
 let session = require('express-session');
-let MongoDBStore = require('connect-mongodb-session')(session);
-var env = require('../config/env')
+let MongoStore = require('connect-mongodb-session')(session);
+
+
 
 console.log(process.env.CONNECTIONSTRING)
 
-let store = new MongoDBStore(
+let store = new MongoStore(
 	{
-		uri: process.env.CONNECTIONSTRING,
+		uri: "mongodb://student:student@ds233500.mlab.com:33500/starfeet-db",
 		collection: 'Sessions'
 	});
 
@@ -15,8 +16,9 @@ store.on('error', function (error) {
 	console.error(error);
 });
 
+//@ts-ignore
 module.exports = session({
-	secret: 'It\'s dangerous to go alone',
+	secret: ';ljkd;jfsafds;ajldsaf;kljkfljds;dfarts',
 	cookie: {
 		maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week 
 	},

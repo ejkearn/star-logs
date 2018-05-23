@@ -1,11 +1,12 @@
 let router = require('express').Router()
 let Users = require('../models/user')
+let session = require('./sessions')
 
 router.post('/register', (req, res) => {
   Users.create(req.body)
     .then((user) => {
       req.session.uid = user._id
-      req.session.save()
+
       user.password = null
       delete user.password
       res.send({
@@ -28,7 +29,7 @@ router.post('/login', (req, res) => {
             return res.status(401).send({error: 'Invalid Email or Password'})
           }
           req.session.uid = user._id;
-          req.session.save()
+    
           user.password = null
           delete user.password
           res.send({
@@ -49,9 +50,10 @@ router.post('/login', (req, res) => {
 })
 
 router.delete('/logout', (req, res) => {
-  req.session.destroy()
-  res.send({
-    message: 'You have successfully been logged out. Please come back soon!'
+  req.session.destroy(() =>{
+    res.send({
+      message: 'You have successfully been logged out. Please come back soon!'
+    })
   })
 })
 
@@ -73,4 +75,4 @@ router.get('/authenticate', (req,res) => {
 
 
 
-module.exports = router
+module.exports = {router, session}
