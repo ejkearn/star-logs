@@ -4,7 +4,6 @@ var app = express()
 var cors = require('cors')
 var port = 3000
 
-
 app.use (cors())
 
 require('./db/mlab-config')
@@ -22,9 +21,15 @@ app.use(auth.router)
 
 
 var ships = require('./routes/ships')
+var logs = require('./routes/logs')
 var comments = require('./routes/comments')
 
 
+app.use(auth.isLoggedIn)
+
+app.use(ships.router)
+app.use(logs.router)
+app.use(comments.router)
 
 //catch all
 app.get('*', (req, res, next) => {

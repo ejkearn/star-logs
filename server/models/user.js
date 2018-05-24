@@ -4,6 +4,14 @@ let ObjectId = Schema.Types.ObjectId
 let bcrypt = require('bcryptjs')
 const SALT_FACTOR = 10
 
+const RANKS = [
+  'Ensign',
+  'Lieutenant',
+  'Captain',
+  'Admiral',
+]
+
+
 let schema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true, dropDups: true },
@@ -11,15 +19,10 @@ let schema = new Schema({
   created: { type: Number, required: true, default: Date.now() },
   rank: {
     type: String, required: true, enum:
-      [
-        'Ensign',
-        'Lieutenant',
-        'Captain',
-        'Admiral',
-      ],
+      RANKS,
     default: 'Ensign'
   },
-  shipId: { type: ObjectId, ref: 'Ship' }
+  shipId: { type: ObjectId, ref: 'Ship', default: '5b06dd0c21cdb60e202bafc0'}
 })
 
 
@@ -50,5 +53,11 @@ schema.methods.validatePassword = function (password) {
     });
   })
 };
+
+schema.methods.hasAccess = function(rank){
+
+    return RANKS.indexOf(this.rank) >= RANKS.indexOf(rank)
+
+}
 
 module.exports = mongoose.model('User', schema)

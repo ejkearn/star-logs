@@ -74,5 +74,21 @@ router.get('/authenticate', (req,res) => {
 })
 
 
+function isLoggedIn(req,res,next){
+  if(!req.session.uid){
+    return res.send({error: "Not Authorized"})
+  }
 
-module.exports = {router, session}
+  Users.findById(req.session.uid).then(user =>{
+    req.session.user = user
+    next()
+  })
+  .catch(e => {
+    res.status(500).send(e)
+  })
+
+}
+
+
+
+module.exports = {router, session, isLoggedIn}

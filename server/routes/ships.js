@@ -15,8 +15,7 @@ router.post('/api/ships', (req,res,next)=>{
   var ship = req.body
   Ships.create(ship)
   .then(newShip =>{
-    res.status(200)
-.send(newShip)
+    res.status(200).send(newShip)
   })
   .catch(err =>{
     res.status(400).send(err)
