@@ -20,7 +20,9 @@ app.use(auth.router)
 
 //routs
 
-// var ships = require('./routs')
+
+var ships = require('./routes/ships')
+var comments = require('./routes/comments')
 
 
 
